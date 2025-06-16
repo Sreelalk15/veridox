@@ -70,7 +70,7 @@ function Welcome() {
       <h1>Welcome, {user?.firstName} {user?.lastName}!</h1>
       <h2>Your ID: {user?.id}</h2>
       
-      {user && user.marks != null && (
+      {user?.marks && (
         <>
           <h3>Your Marks: {user?.marks}</h3>
           <h3>Time Taken: {user?.timeConsumed} sec</h3>
