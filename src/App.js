@@ -1,11 +1,13 @@
 import React from "react";
-  import { HashRouter as Router, Routes, Route } from "react-router-dom";
-  import Header from "./components/Header";
-  import Footer from "./components/Footer";
-  import Home from "./components/Home";
-  import Welcome from "./components/Welcome";
-  import Quiz from "./components/Quiz";
-  import UsersList from "./components/UsersList";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./components/Home";
+import Welcome from "./components/Welcome";
+import Quiz from "./components/Quiz";
+import UsersList from "./components/UsersList";
+import Login from "./components/Login";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -17,7 +19,16 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/quiz" element={<Quiz />} />
-            <Route path="/userslist" element={<UsersList />} />
+            <Route path="/login" element={<Login />} />
+            {/* ✅ Only protect this one */}
+            <Route 
+              path="/userslist" 
+              element={
+                <PrivateRoute>
+                  <UsersList />
+                </PrivateRoute>
+              } 
+            />
           </Routes>
         </main>
         <Footer />
