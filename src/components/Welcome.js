@@ -43,7 +43,6 @@ function Welcome() {
           <tbody>
             {user.answers.map(({ questionId, selectedOptionIndex }, idx) => {
               const question = questionsData.find(q => q.id === questionId);
-              console.log("question", question);
               if (!question) return null;
 
               const yourAnswer = question.options[selectedOptionIndex];
@@ -68,6 +67,7 @@ function Welcome() {
 
   return (
     <div className="welcome-container">
+      <img src="/logo.png" alt="Logo" className="logo" />
       <h1>Welcome, {user?.firstName} {user?.lastName}!</h1>
       <h2>Your ID: {user?.id}</h2>
       

@@ -73,8 +73,8 @@ function Home() {
 
   return (
     <div className="home-container">
-      <img src="/logo.png" alt="Logo" className="logo" />
-      <h1>Welcome to Our Company</h1>
+      <img src="verdox/logo.png" alt="Logo" className="logo" />
+      <h1>Submit Your details</h1>
       <form onSubmit={handleSubmit} className="user-form">
         <label>
           First Name<span className="required">*</span>

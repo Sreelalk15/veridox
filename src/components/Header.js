@@ -12,7 +12,7 @@ function Header() {
   return (
     <header className="app-header">
       <div className="logo" onClick={handleLogoClick}>
-        <img src="/logo.svg" alt="Logo" />
+        <img src="verdox/logo.svg" alt="Logo" />
       </div>
     </header>
   );
