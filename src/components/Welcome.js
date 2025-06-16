@@ -67,7 +67,7 @@ function Welcome() {
 
   return (
     <div className="welcome-container">
-      <img src="/logo.png" alt="Logo" className="logo" />
+      <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="Logo" className="logo" />
       <h1>Welcome, {user?.firstName} {user?.lastName}!</h1>
       <h2>Your ID: {user?.id}</h2>
       
