@@ -73,7 +73,6 @@ function Home() {
 
   return (
     <div className="home-container">
-      <h1>Enter Details</h1>
       <form onSubmit={handleSubmit} className="user-form">
         <label>
           First Name<span className="required">*</span>
