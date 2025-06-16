@@ -73,7 +73,6 @@ function Home() {
 
   return (
     <div className="home-container">
-      <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="Logo" className="logo" />
       <h1>Submit Your details</h1>
       <form onSubmit={handleSubmit} className="user-form">
         <label>
