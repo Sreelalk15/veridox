@@ -106,7 +106,7 @@ const Quiz = () => {
   if (isSubmitted) {
     return (
       <div className="quiz-container">
-        <h2>Quiz Submitted!</h2>
+        <h2>Answers Submitted!</h2>
         <p>Your Score: {calculateScore()} / {questionsData.length}</p>
         <p>Redirecting to Welcome page...</p>
       </div>
@@ -151,7 +151,7 @@ const Quiz = () => {
           </button>
         ) : (
           <button onClick={handleSubmit} className="submit-btn" disabled={selectedAnswer === null}>
-            Submit Quiz
+            Submit Answers
           </button>
         )}
       </div>
