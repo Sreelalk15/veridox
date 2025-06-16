@@ -1,0 +1,48 @@
+/* global.css */
+
+/* Reset margins and paddings for consistency */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f9f9;
+  color: #333;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+main {
+  flex: 1; /* pushes footer to bottom */
+  padding: 20px;
+}
+
+/* Make images responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Optional: a reusable container class */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}

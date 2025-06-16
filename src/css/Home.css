@@ -1,0 +1,76 @@
+/* Home.css */
+
+.home-container {
+  max-width: 600px;
+  margin: 50px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  text-align: left;
+  font-weight: 500;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+input.invalid {
+  border-color: red;
+}
+
+.required {
+  color: red;
+  margin-left: 4px;
+}
+
+.duplicate-error {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+button {
+  background: #007bff;
+  color: #fff;
+  font-weight: 600;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+/* Responsive for mobile */
+@media (max-width: 768px) {
+  .home-container {
+    margin: 20px;
+    padding: 20px;
+  }
+}
