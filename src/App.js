@@ -5,6 +5,7 @@ import React from "react";
   import Home from "./components/Home";
   import Welcome from "./components/Welcome";
   import Quiz from "./components/Quiz";
+  import UsersList from "./components/UsersList";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/quiz" element={<Quiz />} />
-            {/* Add other routes here */}
+            <Route path="/userslist" element={<UsersList />} />
           </Routes>
         </main>
         <Footer />

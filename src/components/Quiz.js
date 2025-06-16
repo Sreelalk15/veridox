@@ -11,10 +11,19 @@ const Quiz = () => {
   const user = location.state?.user;
 
   const totalTime = 5 * 60; // 5 minutes in seconds
-  const [timeLeft, setTimeLeft] = useState(totalTime);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState(Array(questionsData.length).fill(null));
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const savedStart = localStorage.getItem("quizStartTime");
+    const startTime = savedStart ? parseInt(savedStart, 10) : Date.now();
+    if (!savedStart) localStorage.setItem("quizStartTime", startTime);
+
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    const remaining = totalTime - elapsedSeconds;
+    return remaining > 0 ? remaining : 0;
+  });
+  
 
   useEffect(() => {
     if (!user) {
@@ -66,6 +75,7 @@ const Quiz = () => {
     setIsSubmitted(true);
 
     const timeConsumed = ((totalTime - timeLeft) / 60).toFixed(2);
+    localStorage.removeItem("quizStartTime");
 
     let answersArray = [];
 
