@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/veridox/static/css/main.23d9690e.css",
-    "main.js": "/veridox/static/js/main.e2f0b3b8.js",
+    "main.css": "/veridox/static/css/main.3c3f2399.css",
+    "main.js": "/veridox/static/js/main.d658cac1.js",
     "index.html": "/veridox/index.html",
-    "main.23d9690e.css.map": "/veridox/static/css/main.23d9690e.css.map",
-    "main.e2f0b3b8.js.map": "/veridox/static/js/main.e2f0b3b8.js.map"
+    "main.3c3f2399.css.map": "/veridox/static/css/main.3c3f2399.css.map",
+    "main.d658cac1.js.map": "/veridox/static/js/main.d658cac1.js.map"
   },
   "entrypoints": [
-    "static/css/main.23d9690e.css",
-    "static/js/main.e2f0b3b8.js"
+    "static/css/main.3c3f2399.css",
+    "static/js/main.d658cac1.js"
   ]
 }
