@@ -36,12 +36,15 @@ const Quiz = () => {
     return remaining > 0 ? remaining : 0;
   });
 
-  // ✅ Shuffle questions ONCE on mount
+  //Shuffle questions ONCE on mount
   useEffect(() => {
-    const shuffled = shuffleArray(questionsData);
+    //Skip disabled questions!
+    const enabledQuestions = questionsData.filter(q => !q.disabled);
+    const shuffled = shuffleArray(enabledQuestions);
     setShuffledQuestions(shuffled);
     setAnswers(Array(shuffled.length).fill(null));
   }, []);
+
 
   useEffect(() => {
     if (!user) {
