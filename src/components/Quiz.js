@@ -11,20 +11,8 @@ const Quiz = () => {
   const user = location.state?.user;
 
   const totalTime = 5 * 60; // 5 minutes in seconds
-
-  // ✅ Shuffle helper
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
-  const [shuffledQuestions, setShuffledQuestions] = useState([]);
-  const [answers, setAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState(Array(questionsData.length).fill(null));
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(() => {
     const savedStart = localStorage.getItem("quizStartTime");
@@ -35,13 +23,7 @@ const Quiz = () => {
     const remaining = totalTime - elapsedSeconds;
     return remaining > 0 ? remaining : 0;
   });
-
-  // ✅ Shuffle questions ONCE on mount
-  useEffect(() => {
-    const shuffled = shuffleArray(questionsData);
-    setShuffledQuestions(shuffled);
-    setAnswers(Array(shuffled.length).fill(null));
-  }, []);
+  
 
   useEffect(() => {
     if (!user) {
@@ -57,6 +39,7 @@ const Quiz = () => {
     const timer = setInterval(() => {
       setTimeLeft((t) => t - 1);
     }, 1000);
+
     return () => clearInterval(timer);
   }, [timeLeft]);
 
@@ -67,7 +50,7 @@ const Quiz = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < shuffledQuestions.length - 1) {
+    if (currentQuestionIndex < questionsData.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
@@ -80,7 +63,7 @@ const Quiz = () => {
 
   const calculateScore = () => {
     return answers.reduce((score, ans, idx) => {
-      if (ans === shuffledQuestions[idx].correctAnswerIndex) {
+      if (ans === questionsData[idx].correctAnswerIndex) {
         return score + 1;
       }
       return score;
@@ -96,44 +79,33 @@ const Quiz = () => {
 
     let answersArray = [];
 
+    // ✅ Update Firestore: find user by ID or Email and update marks & quiz_started
     try {
       const usersRef = collection(db, "users");
       const q = query(usersRef, where("id", "==", user.id), where("email", "==", user.email));
       const snapshot = await getDocs(q);
       if (!snapshot.empty) {
         const docRef = snapshot.docs[0].ref;
-
-        // ✅ Fix: store real question ID
-        answersArray = answers.map((selectedOptionIndex, index) => ({
-          questionId: shuffledQuestions[index].id,
-          selectedOptionIndex,
+        answersArray = Object.entries(answers).map(([questionId, selectedOptionIndex]) => ({
+            questionId: Number(questionId),
+            selectedOptionIndex,
         }));
-
-        await updateDoc(docRef, {
-          marks: score,
-          timeConsumed: timeConsumed,
-          quiz_started: true,
-          answers: answersArray,
+        await updateDoc(docRef, { 
+            marks: score,
+            timeConsumed: timeConsumed, 
+            quiz_started: true,
+            answers: answersArray, 
         });
       }
     } catch (error) {
       console.error("Error updating marks:", error);
     }
 
+    // ✅ Navigate to Welcome with updated marks
     setTimeout(() => {
-      navigate("/welcome", {
-        state: {
-          user: {
-            ...user,
-            marks: score,
-            timeConsumed: timeConsumed,
-            answers: answersArray,
-          },
-        },
-      });
+      navigate("/welcome", { state: { user: { ...user, marks: score, timeConsumed: timeConsumed, answers: answersArray } } });
     }, 1500);
   };
-
 
   const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60).toString().padStart(2, "0");
@@ -141,26 +113,23 @@ const Quiz = () => {
     return `${m}:${s}`;
   };
 
-  // ✅ Show loading until shuffledQuestions is ready
-  if (shuffledQuestions.length === 0) return <div>Loading quiz...</div>;
-
   if (isSubmitted) {
     return (
       <div className="quiz-container">
         <h2>Answers Submitted!</h2>
-        <p>Your Score: {calculateScore()} / {shuffledQuestions.length}</p>
+        <p>Your Score: {calculateScore()} / {questionsData.length}</p>
         <p>Redirecting to Welcome page...</p>
       </div>
     );
   }
 
-  const currentQuestion = shuffledQuestions[currentQuestionIndex];
+  const currentQuestion = questionsData[currentQuestionIndex];
   const selectedAnswer = answers[currentQuestionIndex];
 
   return (
     <div className="quiz-container">
       <div className="quiz-header">
-        <h2>Question {currentQuestionIndex + 1} of {shuffledQuestions.length}</h2>
+        <h2>Question {currentQuestionIndex + 1} of {questionsData.length}</h2>
         <div className="timer">Time Left: {formatTime(timeLeft)}</div>
       </div>
 
@@ -183,27 +152,15 @@ const Quiz = () => {
       </div>
 
       <div className="navigation-buttons">
-        <button
-          onClick={handlePrevious}
-          disabled={currentQuestionIndex === 0}
-          className="nav-btn"
-        >
+        <button onClick={handlePrevious} disabled={currentQuestionIndex === 0} className="nav-btn">
           Previous
         </button>
-        {currentQuestionIndex < shuffledQuestions.length - 1 ? (
-          <button
-            onClick={handleNext}
-            className="nav-btn"
-            disabled={selectedAnswer === null}
-          >
+        {currentQuestionIndex < questionsData.length - 1 ? (
+          <button onClick={handleNext} className="nav-btn" disabled={selectedAnswer === null}>
             Next
           </button>
         ) : (
-          <button
-            onClick={handleSubmit}
-            className="submit-btn"
-            disabled={selectedAnswer === null}
-          >
+          <button onClick={handleSubmit} className="submit-btn" disabled={selectedAnswer === null}>
             Submit Answers
           </button>
         )}
