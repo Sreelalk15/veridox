@@ -115,7 +115,6 @@ const Quiz = () => {
         await updateDoc(docRef, {
           marks: score,
           timeConsumed: timeConsumed,
-          quiz_started: true,
           answers: answersArray,
           updated: serverTimestamp(),
         });

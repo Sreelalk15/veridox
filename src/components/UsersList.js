@@ -53,7 +53,7 @@ const UsersList = () => {
 
   return (
     <div className="userlist-container full-page">
-      <h2>Student Details</h2>
+      <h2>Exam Details</h2>
 
       <div className="search-box">
         <input

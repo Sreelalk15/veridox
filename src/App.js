@@ -8,6 +8,7 @@ import Quiz from "./components/Quiz";
 import UsersList from "./components/UsersList";
 import Login from "./components/Login";
 import PrivateRoute from "./components/PrivateRoute";
+import AddStudentId from "./components/AddStudentId";
 
 function App() {
   return (
@@ -28,6 +29,14 @@ function App() {
                   <UsersList />
                 </PrivateRoute>
               } 
+            />
+            <Route
+              path="/addstudentid"
+              element={
+                <PrivateRoute>
+                  <AddStudentId />
+                </PrivateRoute>
+              }
             />
           </Routes>
         </main>

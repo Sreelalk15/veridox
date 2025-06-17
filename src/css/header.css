@@ -1,53 +1,88 @@
+/* header.css */
+
 .app-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-between; /* ensures logo left, logout right */
-  padding: 10px 30px;
-  background-color: #333;
-  color: #fff;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
 }
 
-.app-header .logo {
+.logo {
+  cursor: pointer;
   display: flex;
   align-items: center;
+}
+
+.header-right {
+  display: flex;
+  gap: 16px; /* increased gap for better spacing */
+  align-items: center;
+  flex-wrap: wrap; /* wrap buttons on small screens */
+}
+
+/* Shared button styles */
+.header-button {
+  padding: 8px 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  color: white;
   cursor: pointer;
-}
-
-.app-header .logo img {
-  height: 50px;
-  background: #fff; /* white background behind logo */
-  padding: 5px;
-  border-radius: 5px;
-}
-
-/* Logout button styling */
-.logout-button {
-  background: #e74c3c;
-  color: #fff;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  min-width: 130px;
+  text-align: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+/* Add Student ID button */
+.add-student-id-button {
+  background-color: #007bff;
+}
+
+.add-student-id-button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 5px 15px rgba(0, 86, 179, 0.4);
+}
+
+/* View Exam Details button */
+.view-exam-details-button {
+  background-color: #28a745;
+}
+
+.view-exam-details-button:hover {
+  background-color: #1e7e34;
+  box-shadow: 0 5px 15px rgba(30, 126, 52, 0.4);
+}
+
+/* Logout button */
+.logout-button {
+  padding: 8px 14px;
+  background-color: #dc3545;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  min-width: 130px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
 }
 
 .logout-button:hover {
-  background: #c0392b;
+  background-color: #b02a37;
+  box-shadow: 0 5px 15px rgba(176, 42, 55, 0.4);
 }
 
-/* Responsive: logo & button stack better on small screens */
-@media (max-width: 600px) {
-  .app-header {
-    flex-direction: row;
-    padding: 10px 20px;
+/* Responsive */
+@media (max-width: 480px) {
+  .header-right {
+    justify-content: center;
+    gap: 12px;
   }
-
-  .logout-button {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-
-  .app-header .logo img {
-    height: 40px;
+  .header-button {
+    min-width: 100%;
+    font-size: 16px;
   }
 }

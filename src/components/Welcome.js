@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";  // your Firebase config
 import questionsData from "./QuestionsData";
 import "./../css/Welcome.css";
 
@@ -16,8 +18,25 @@ function Welcome() {
     }
   }, [user, navigate]);
 
-  const handleStartQuiz = () => {
-    navigate("/quiz", { state: { user } });
+  const handleStartQuiz = async () => {
+    if (!user?.docId) {
+      alert("User document ID missing. Cannot start quiz.");
+      return;
+    }
+
+    try {
+      const userRef = doc(db, "users", user.docId);
+      await updateDoc(userRef, {
+        quiz_started: true,
+        updated: serverTimestamp(),
+      });
+
+      // Navigate to quiz page with updated user data (quiz_started true)
+      navigate("/quiz", { state: { user: { ...user, quiz_started: true } } });
+    } catch (error) {
+      console.error("Error starting quiz:", error);
+      alert("Failed to start quiz. Please try again.");
+    }
   };
 
   const handleShowResult = () => {
@@ -41,7 +60,7 @@ function Welcome() {
           </thead>
           <tbody>
             {user.answers.map(({ questionId, selectedOptionIndex }, idx) => {
-              const question = questionsData.find(q => q.id === questionId);
+              const question = questionsData.find((q) => q.id === questionId);
               if (!question) return null;
 
               const yourAnswer = question.options[selectedOptionIndex];
@@ -69,27 +88,33 @@ function Welcome() {
       <h1>Welcome, {user?.firstName} {user?.lastName}!</h1>
       <h2>Your ID: {user?.id}</h2>
 
-      {user && !(user.marks === 0 && user.quiz_started === false) && (
+      {/* Show quiz results only if quiz_started === true */}
+      {user?.quiz_started ? (
         <>
-          <h3>Your Marks: {user?.marks}</h3>
-          <h3>Time Taken: {user?.timeConsumed} sec</h3>
+          <div className="quiz-summary">
+            <h3>Your Marks: {user?.marks ?? "-"}</h3>
+            <h3>Time Taken: {user?.timeConsumed ?? "-"} sec</h3>
+          </div>
           <p>You have completed the quiz. Well done!</p>
 
           {!showResult && (
-            <button className="show-result-btn" onClick={handleShowResult}>Show My Result</button>
+            <button className="show-result-btn" onClick={handleShowResult}>
+              Show My Result
+            </button>
           )}
 
           {showResult && (
             <>
               {renderResultTable()}
               <br />
-              <button className="hide-result-btn" onClick={() => setShowResult(false)}>Hide Result</button>
+              <button className="hide-result-btn" onClick={() => setShowResult(false)}>
+                Hide Result
+              </button>
             </>
           )}
         </>
-      )}
-
-      {!user?.marks && (
+      ) : (
+        // If quiz not started yet, show rules and start button
         <>
           <h3>Quiz Rules:</h3>
           <div className="quiz-rules-box">

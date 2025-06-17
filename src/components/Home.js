@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
-import { collection, addDoc, query, where, getDocs, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import "./../css/Home.css";
 
 function Home() {
@@ -13,6 +20,7 @@ function Home() {
   });
 
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const validate = () => {
@@ -27,50 +35,60 @@ function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
     if (!validate()) return;
 
     try {
       const usersRef = collection(db, "users");
-      const q = query(
-        usersRef,
-        where("id", "==", formData.id)
-      );
-      const q2 = query(
-        usersRef,
-        where("email", "==", formData.email)
-      );
+      const q = query(usersRef, where("id", "==", formData.id.trim()));
+      const querySnapshot = await getDocs(q);
 
-      const querySnapshot1 = await getDocs(q);
-      const querySnapshot2 = await getDocs(q2);
-
-      let userData = null;
-
-      if (!querySnapshot1.empty) {
-        userData = querySnapshot1.docs[0].data();
-      } else if (!querySnapshot2.empty) {
-        userData = querySnapshot2.docs[0].data();
+      if (querySnapshot.empty) {
+        // ID not found, show error
+        setMessage("Your id not existed in the record.");
+        return;
       }
 
-      if (userData) {
-        // If exists: navigate to Welcome with existing data
-        navigate("/welcome", { state: { user: userData } });
-      } else {
-        // Else: add new user, then navigate
-        await addDoc(usersRef, {
-          ...formData,
-          quiz_started: false,
-          marks: 0,
-          created: serverTimestamp(),
-        });
-        setTimeout(() => {
-          navigate("/welcome", {
-            state: { user: { ...formData, quiz_started: false, marks: 0 } },
-          });
-        }, 100);
+      // ID exists, get the user doc and ref
+      const userDoc = querySnapshot.docs[0];
+      const userRef = doc(db, "users", userDoc.id);
+      const userData = userDoc.data();
+
+      // Prepare trimmed form data for comparison
+      const trimmedFormData = {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim(),
+      };
+
+      // Check if any fields differ
+      const fieldsToCheck = ["firstName", "lastName", "email"];
+      let hasChanges = false;
+      const updateData = {};
+
+      for (const field of fieldsToCheck) {
+        if (userData[field] !== trimmedFormData[field]) {
+          hasChanges = true;
+          updateData[field] = trimmedFormData[field];
+        }
       }
 
+      // If changes exist, update Firestore document with updated fields
+      if (hasChanges) {
+        await updateDoc(userRef, updateData);
+      }
+
+      // Add Firestore document ID to the user object before passing forward
+      const userWithDocId = {
+        ...userData,
+        ...updateData,
+        docId: userDoc.id,
+      };
+
+      navigate("/welcome", { state: { user: userWithDocId } });
     } catch (error) {
       console.error("Error:", error);
+      setMessage("An error occurred. Please try again.");
     }
   };
 
@@ -104,9 +122,7 @@ function Home() {
           <input
             type="text"
             value={formData.id}
-            onChange={(e) =>
-              setFormData({ ...formData, id: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, id: e.target.value })}
             className={errors.id ? "invalid" : ""}
           />
         </label>
@@ -115,14 +131,14 @@ function Home() {
           <input
             type="email"
             value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             className={errors.email ? "invalid" : ""}
           />
         </label>
         <button type="submit">Submit</button>
       </form>
+
+      {message && <p className="message">{message}</p>}
     </div>
   );
 }
