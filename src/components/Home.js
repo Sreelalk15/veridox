@@ -61,9 +61,11 @@ function Home() {
           quiz_started: false,
           marks: 0,
         });
-        navigate("/welcome", {
-          state: { user: { ...formData, quiz_started: false, marks: 0 } },
-        });
+        setTimeout(() => {
+          navigate("/welcome", {
+            state: { user: { ...formData, quiz_started: false, marks: 0 } },
+          });
+        }, 100);
       }
 
     } catch (error) {
