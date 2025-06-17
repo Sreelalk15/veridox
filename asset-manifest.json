@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/veridox/static/css/main.a7629a96.css",
-    "main.js": "/veridox/static/js/main.12e5966e.js",
+    "main.js": "/veridox/static/js/main.5a688845.js",
     "index.html": "/veridox/index.html",
     "main.a7629a96.css.map": "/veridox/static/css/main.a7629a96.css.map",
-    "main.12e5966e.js.map": "/veridox/static/js/main.12e5966e.js.map"
+    "main.5a688845.js.map": "/veridox/static/js/main.5a688845.js.map"
   },
   "entrypoints": [
     "static/css/main.a7629a96.css",
-    "static/js/main.12e5966e.js"
+    "static/js/main.5a688845.js"
   ]
 }
