@@ -24,7 +24,6 @@ function Welcome() {
     setShowResult(true);
   };
 
-  // Match question and user answer with question data
   const renderResultTable = () => {
     if (!user?.answers) return <p>No answers found.</p>;
 
@@ -51,7 +50,7 @@ function Welcome() {
 
               return (
                 <tr key={questionId} className={isCorrect ? "correct" : "incorrect"}>
-                  <td>{idx + 1}</td>  {/* This is just for numbering rows, not option indexes */}
+                  <td>{idx + 1}</td>
                   <td>{question.question}</td>
                   <td>{yourAnswer}</td>
                   <td>{correctAnswer}</td>
@@ -69,7 +68,7 @@ function Welcome() {
     <div className="welcome-container">
       <h1>Welcome, {user?.firstName} {user?.lastName}!</h1>
       <h2>Your ID: {user?.id}</h2>
-      
+
       {user && !(user.marks === 0 && user.quiz_started === false) && (
         <>
           <h3>Your Marks: {user?.marks}</h3>
@@ -83,11 +82,10 @@ function Welcome() {
           {showResult && (
             <>
               {renderResultTable()}
-              <br></br>
+              <br />
               <button className="hide-result-btn" onClick={() => setShowResult(false)}>Hide Result</button>
             </>
           )}
-
         </>
       )}
 

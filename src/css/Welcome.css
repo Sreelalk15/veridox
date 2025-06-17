@@ -1,13 +1,13 @@
-/* Welcome.css */
-
 .welcome-container {
-  max-width: 600px;
-  margin: 50px auto;
+  max-width: 900px;
+  width: 90vw;
+  margin: 20px auto;
   background: #ffffff;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -53,16 +53,16 @@ button:hover {
   border: 2px solid red;
   padding: 20px;
   border-radius: 8px;
-  background-color: #ffe6e6; /* a light red background for better contrast */
+  background-color: #ffe6e6; /* light red background */
   margin-bottom: 20px;
   text-align: left;
 }
 
 .table-scroll-container {
-  max-height: 1000px; /* adjust this height as needed */
+  max-height: 600px;
   overflow-y: auto;
+  width: 100%;
 }
-
 
 .result-table {
   width: 100%;
@@ -71,8 +71,8 @@ button:hover {
   font-family: Arial, sans-serif;
 }
 
-
-.result-table th, .result-table td {
+.result-table th,
+.result-table td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
@@ -109,11 +109,11 @@ button:hover {
   background-color: #0b7dda;
 }
 
-
-/* Responsive for mobile */
+/* Responsive */
 @media (max-width: 768px) {
   .welcome-container {
     margin: 20px;
     padding: 20px;
+    width: 95vw;
   }
 }
