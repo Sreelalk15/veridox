@@ -76,6 +76,7 @@ const UsersList = () => {
               <th>Email</th>
               <th>Marks</th>
               <th>Time Consumed</th>
+              <th>Date</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -88,6 +89,7 @@ const UsersList = () => {
                   <td>{user.email}</td>
                   <td>{user.marks ?? "N/A"}</td>
                   <td>{user.timeConsumed ?? "N/A"}</td>
+                  <td>{user.updated ? user.updated.toDate().toLocaleString() : "-"}</td>
                   <td>
                     <button
                       className="details-button"
@@ -101,7 +103,7 @@ const UsersList = () => {
                 </tr>
                 {expandedUserIds.includes(user.id) && user.answers && (
                   <tr>
-                    <td colSpan={6} className="answer-details">
+                    <td colSpan={7} className="answer-details">
                       <strong>Answers:</strong>
                       <table className="answers-table">
                         <thead>

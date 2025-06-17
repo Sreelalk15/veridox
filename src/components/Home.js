@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, serverTimestamp } from "firebase/firestore";
 import "./../css/Home.css";
 
 function Home() {
@@ -60,6 +60,7 @@ function Home() {
           ...formData,
           quiz_started: false,
           marks: 0,
+          created: serverTimestamp(),
         });
         setTimeout(() => {
           navigate("/welcome", {

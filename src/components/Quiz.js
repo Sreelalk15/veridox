@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import questionsData from "./QuestionsData";
-import { collection, query, where, getDocs, updateDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 import "./../css/Quiz.css";
 
@@ -106,7 +106,7 @@ const Quiz = () => {
       if (!snapshot.empty) {
         const docRef = snapshot.docs[0].ref;
 
-        // ✅ Fix: store real question ID
+        //Fix: store real question ID
         answersArray = answers.map((selectedOptionIndex, index) => ({
           questionId: shuffledQuestions[index].id,
           selectedOptionIndex,
@@ -117,6 +117,7 @@ const Quiz = () => {
           timeConsumed: timeConsumed,
           quiz_started: true,
           answers: answersArray,
+          updated: serverTimestamp(),
         });
       }
     } catch (error) {
